@@ -1,0 +1,17 @@
+# Ignore Visual Studio settings and build output
+**/.vs/
+**/x64/
+**/Debug/
+**/Release/
+*.suo
+*.user
+*.VC.db
+*.obj
+*.log
+*.pch
+*.tlog
+*.ipch
+*.ilk
+*.pdb
+*.exe
+*.cache
