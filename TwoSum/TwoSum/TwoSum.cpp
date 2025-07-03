@@ -2,19 +2,57 @@
 //
 
 #include <iostream>
-
+using namespace std;
+int* twoSum(int* nums, int numsSize, int target, int* returnSize);
 int main()
 {
-    std::cout << "Hello World!\n";
+	// Intialize all the input variables 
+	int nums[] = { 3,2,4 };
+	int numsSize = sizeof(nums) / sizeof(int);
+	int target = 6;
+	int returnSize = 2;
+	int * resultIndices = twoSum(nums, numsSize, target, &returnSize);
+
+	// add condition to avoid access of unintialized memory
+	if (resultIndices != NULL) {
+		cout << "resultIndices[0]:" << resultIndices[0] << endl;
+		cout << "resultIndices[1]:" << resultIndices[1] << endl;
+		free(resultIndices);// deallocate once done to avoid memory leak
+	}
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+// User defined Function
+int * twoSum(int* nums, int numsSize, int target, int* returnSize)
+{
+	// Intialize the result array pointer and front and rare markers 
+	int front = 0;
+	int rare = 0;
+	int* result = NULL;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	if ((*returnSize) != 2)
+	{
+		*returnSize = 2;// Only to be used when submitting on LeetCode cause it does not passes int * returnSize when calling
+	}
+
+	while (rare < numsSize)
+	{
+		for (int i = 0; i < numsSize; i++)
+		{
+			if (front != rare)
+			{
+				// if both front and rare markers are in within given array size and are not the same look for target
+				if ((nums[front] + nums[rare]) == target)
+				{
+					result = (int*)malloc(*returnSize * sizeof(int)); // Only allocate memory when need avoid memory allocation in case of no match is found
+					result[0] = rare;
+					result[1] = front;
+					return result;//Early return of function to avoid unwanted processing if job is done
+				}
+			}
+			front++;//Front marker Traversing
+		}
+		rare++;//rare marker Increment after each complete traversal of front marker
+		front = 0;
+	}
+	return NULL;// avoid returning garbage value inside result if no match is found instead return NULL
+}
